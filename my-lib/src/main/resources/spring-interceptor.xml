@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!-- Spring 统一日志处理 LogInterceptor拦截器 配置 -->
+	<bean id="logLnterceptor" class="star45.web.util.spring.LogInterceptor" />
+	<!-- Spring 统一异常处理 ExceptionAdvisor配置 -->
+	<bean id="exceptionHandler" class="star45.web.util.spring.ExceptionAdvisor"></bean>
+	
+	<!-- 配置捕获异常的具体方法  可以不配置 -->
+	<bean id="exceptionRegexpMethodPointcutAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">  
+	    <property name="patterns">
+			<list>
+			<!-- 访问方法的规则 -->
+			<!-- <value>.*execute.*</value> -->
+			<value>.*.*</value>
+			</list>
+		</property>
+	    <property name="advice" ref="exceptionHandler"/>  
+	</bean>
+	
+	<!-- Bean自动代理处理器 配置 -->
+	<bean
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<list>	<!-- 配置需要进行日志记录的Service和Dao -->
+				<value>commonDao</value>
+				<!-- 配置所有Service结尾命名的Bean，即所有Service层的类都要经过exceptionHandler异常处理类 -->
+				<value>*Service*</value>  <!-- Service层的Bean ID 命名要以Service结尾 -->
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<!-- 使用了 正则匹配具体的方法，也可以直接使用 exceptionHandler-->
+				<value>exceptionRegexpMethodPointcutAdvisor</value>
+				<!--<value>transactionInterceptor</value> -->
+			</list>
+		</property>
+	</bean>
+	<!-- ——————————————————Spring 统一日志处理 + 统一异常处理 配置结束—————————————悲伤的分隔线—————————— -->
+
+</beans>

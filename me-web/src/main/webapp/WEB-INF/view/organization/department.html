@@ -1,0 +1,64 @@
+<#import "/WEB-INF/template/viewTemplate.ftl" as late>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>单位管理</title> 
+		<@late.viewTemplate template=["common"]/>
+		<script type="text/javascript" src="../js/organization/department.js"></script>
+	
+	</head>
+<body>
+
+
+	<div
+		style="font-size:12px;width:100%;min-width:750px;max-width:900px;height:25px;">
+
+	</div>
+
+	<table id="tt" style="width:100%px;height:350px;" fitColumns="true"></table>
+</body>
+<!-- 弹出框 新建和编辑-->
+<div id="addDialog" class="easyui-dialog" title="编辑单位"
+	style="width:460px;height:340px;padding:20px 30px;background:url(../images/btn.png) repeat;"
+	closed="true" buttons="#adddlg-buttons">
+	<form id="fm" class="aa" method="post" novalidate>
+		<input id="id" name="department.id" type="hidden" />
+		<div class="fitem" style="height:35px;">
+			<label style="float:left;width:70px;">单位名称:</label> <input id="name"
+				name="department.name" style="width:288px;"
+				class="easyui-validatebox" required="true" missingMessage="此项必填!"
+				validType="maxLength[255]">
+		</div>
+		<div class="fitem" style="height:35px;">
+			<label style="float:left;width:70px;">联系人:</label> <input id="person"
+				name="department.person" style="width:200px;"
+				class="easyui-validatebox" required="true" missingMessage="此项必填!"
+				validType="maxLength[20]">
+		</div>
+		<div class="fitem" style="height:35px;">
+			<label style="float:left;width:70px;">联系电话:</label> <input id="phone"
+				name="department.phone" style="width:200px;"
+				class="easyui-validatebox" required="true" missingMessage="此项必填!"
+				validType="tephone">
+		</div>
+		<div class="fitem">
+			<label style="float:left;width:70px;">单位描述:</label>
+			<textarea id="des" name="department.des"
+				style="width:288px;height:80px;" class="easyui-validatebox"
+				validType="maxLength[255]"></textarea>
+		</div>
+	</form>
+</div>
+<!--  定义弹出框中的按钮 -->
+<div id="adddlg-buttons">
+	<a id="ww" href="javascript:void(0)" class="easyui-linkbutton"
+		iconCls="icon-ok" onclick="saveDepartment()">确定</a> <a id="ff"
+		href="javascript:void(0)" class="easyui-linkbutton"
+		iconCls="icon-cancel"
+		onclick="javascript:$('#addDialog').dialog('close')">返回</a>
+</div>
+
+
+
+</html>

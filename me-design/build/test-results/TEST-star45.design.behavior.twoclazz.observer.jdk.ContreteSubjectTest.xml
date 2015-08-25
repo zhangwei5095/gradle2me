@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="star45.design.behavior.twoclazz.observer.jdk.ContreteSubjectTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-08-11T06:08:59" hostname="xulikang" time="0.001">
+  <properties/>
+  <testcase name="change" classname="star45.design.behavior.twoclazz.observer.jdk.ContreteSubjectTest" time="0.001"/>
+  <system-out><![CDATA[观察者  的名字  许立亢
+观察者  更新的内容  star45
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

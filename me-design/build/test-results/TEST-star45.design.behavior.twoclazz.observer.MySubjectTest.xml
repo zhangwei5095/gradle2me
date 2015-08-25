@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="star45.design.behavior.twoclazz.observer.MySubjectTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-08-11T06:08:59" hostname="xulikang" time="0.004">
+  <properties/>
+  <testcase name="testOperation" classname="star45.design.behavior.twoclazz.observer.MySubjectTest" time="0.004"/>
+  <system-out><![CDATA[更新 自己。。。!
+观察者1 接收到信息。。。
+观察者2 接收到信息。。。
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

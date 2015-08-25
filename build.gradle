@@ -1,0 +1,274 @@
+/**
+ * gradle 主文件
+ */
+import java.text.SimpleDateFormat
+import org.apache.tools.ant.taskdefs.condition.Os
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+// Settings
+ext {
+    // Project constants
+    github_org = 'organization'
+    project_group = 'com.example'
+    project_name = 'OneLevelProjects'
+    //project_version = '0.0.1-SNAPSHOT'
+    project_description = 'Template for Java, Gradle 学习讨论。。。'
+    project_jdk = '1.6'
+    project_web = '2.5'
+
+    /** 生成 manifest 的方法，在打 jar 包或者 war 包时候调用 */
+    defaultManifest = { proj ->
+        return manifest {
+            def buildTimeAndDate = new Date()
+            def buildDate = new SimpleDateFormat('yyyy-MM-dd').format(buildTimeAndDate)
+            def buildTime = new SimpleDateFormat('HH:mm').format(buildTimeAndDate)
+
+            // def git_cmd = "git rev-parse HEAD"
+            // def git_proc = git_cmd.execute()
+
+            //attributes 'SCM-Revision': git_proc.text.trim()
+            attributes 'Built-By': System.properties['user.name']
+            attributes 'Created-By': System.properties['java.version'] + " (" + System.properties['java.vendor'] + " " + System.getProperty("java.vm.version") + ")"
+            attributes 'Build-Host': InetAddress.localHost.hostName
+            attributes 'Build-Date': buildDate
+            attributes 'Build-Time': buildTime
+            attributes 'Timestamp': String.valueOf(System.currentTimeMillis())
+            attributes 'Specification-Title': proj.archivesBaseName
+            attributes 'Specification-Version': proj.version
+            attributes 'Specification-Vendor': project_group
+            attributes 'Implementation-Title': proj.archivesBaseName
+            attributes 'Implementation-Version': proj.version
+            attributes 'Implementation-Vendor': project_group
+            attributes 'provider': 'gradle'
+        }
+    }
+
+    /** Used where gradle task evaluation would fail because of an undefined value, even if the task wasn't targeted. */
+    defaultBlank = { closure ->
+        try {
+            closure()
+        } catch (MissingPropertyException e) {
+            ''
+        }
+    }
+
+    /**
+     * 子项目中调用，用于生成编译数字，此数字可以作为版本号的一个组成部分。
+     * 存储位置为子项目下的 build_number.properties,此文件与子项目的 build.gradle 平级
+     */
+    buildNumberIncrease = {
+        def _build_number_file = new File('build_number.properties')
+        def buildNumber = _build_number_file.text.toInteger()
+        println '-- Old build number: ' + _build_number_file.text
+        buildNumber++
+        println '-- New build number: ' + buildNumber
+        _build_number_file.text = buildNumber
+        return buildNumber
+    }
+}
+
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'war'
+
+// 引入jar包定义
+// 这个文件中定义的jar包可以直接在子项目中使用，不需要再次使用 apply from 这个语句
+
+apply from: 'dependency.gradle'
+
+allprojects {
+    //apply plugin: 'license'
+}
+
+subprojects { subproj ->
+
+    //group = project_group
+    // 这儿置为空值，否则 idea 生成的依赖包命名以此值开始
+    // 与 gradle 的打包规则有冲突
+    group = ""
+
+    apply plugin: 'java'
+    sourceCompatibility = project_jdk
+    targetCompatibility = project_jdk
+
+    apply plugin: 'maven'
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+
+    repositories {
+        maven { url 'http://192.168.7.30:9081/nexus/content/groups/public' }
+        maven { url 'http://192.168.7.30:9081/nexus/content/repositories/codehaus-public/'}
+    }
+
+    jar {
+        excludes = ['**/rebel.xml']
+
+        doFirst {
+            // 生成jar 包的时候按此规则生成 manifest 文件
+            manifest = defaultManifest({subproj})
+        }
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from 'build/docs/javadoc'
+        doFirst {
+            manifest = defaultManifest({subproj})
+        }
+    }
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+        doFirst {
+            manifest = defaultManifest({subproj})
+        }
+    }
+
+    // 编码改为 UTF-8, 否则编译源码的时候会出错
+    // 当然，这个需要根据自己的 java 源码的编码进行调整
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+    //
+    artifacts {
+        archives jar
+        // archives javadocJar
+        archives sourcesJar
+    }
+
+  
+
+    configurations {
+
+        deployerJars
+        // 所有需要忽略的包定义在此
+        all*.exclude group: 'commons-httpclient'
+        all*.exclude group: 'commons-logging'
+        all*.exclude group: 'commons-beanutils', module: 'commons-beanutils'
+    }
+    dependencies {
+        // 用于上传自己项目的jar 包到中心 maven 库
+        deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
+        
+        // 通用依赖
+         
+        
+        compile(
+            libraries.'ant',
+            libraries.'antlr',
+            libraries.'logging-api',
+            libraries.'beanutils',
+            libraries.'betwixt',
+            libraries.'codec',
+            libraries.'collections',
+            libraries.'digester',
+            libraries.'fileupload',
+            libraries.'io',
+            libraries.'lang',
+            libraries.'pool2',
+            libraries.'log4j',
+            
+            libraries.'spring-aop',
+            libraries.'spring-beans',
+            libraries.'spring-aspects',
+            libraries.'spring-context',
+            libraries.'spring-web',
+            libraries.'spring-orm',
+            libraries.'spring-tx',
+            
+            libraries.'standard',
+            libraries.'json',
+            libraries.'protobuf',
+            libraries.'quartz',
+            libraries.'junit'
+        )
+        
+        // 引入根目录和各子项目下的libs中的jar包
+
+        ext.jarTree = fileTree(dir: 'libs', include: '**/*.jar')
+        ext.rootProjectLibs = new File(rootProject.rootDir, 'libs').getAbsolutePath()
+        ext.jarTree += fileTree(dir: rootProjectLibs, include: '**/*.jar')
+
+        compile jarTree
+
+        // 测试依赖
+        testCompile (
+            libraries.'junit',
+            libraries.'spring-test',
+            //libraries.'assertj'
+        )
+    }
+
+    // 上传 jar 包到自己的 maven 服务器
+    uploadArchives {
+        repositories.mavenDeployer {
+            //beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            configuration = configurations.deployerJars
+            repository(
+                // 这儿需要注意，后面的地址是服务器地址，需要写全，是个大坑啊
+                // 另外初次执行的时候最好带上 --info 参数，会提示保存 ssh 验证信息的
+                // 这时候需要输入 yes
+                //
+                // 更详细说明参见我的 blog: http://my.oschina.net/someok/blog/374562
+                url: //"file://d:/Develop/MyProjects/repos/"
+                    "scp://repos.example.com:22/home/maven/repos/release"
+            )
+            {
+                // If these are not defined assemble needlessly fails for unrelated tasks, hence, defaultBlank.
+                authentication(userName: "maven", password: "maven")
+            }
+
+        }
+    }
+
+    // 显示当前项目下所有用于 compile 的 jar.
+    //
+    task listJars(description: 'Display all compile jars.') << {
+        configurations.compile.each { File file -> println file.name }
+    }
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Misc
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+// 在idea 的 module 中忽略 projects 目录
+// project("projects") {
+//    ideaModule.enabled = false
+// }
+
+
+/**
+ * idea 里面忽略根项目，也就是说不将根项目设置为 module
+ */
+gradle.projectsEvaluated {
+    gradle.rootProject {
+        ideaModule.enabled = false
+        idea {
+            project {
+                // modules = subprojects*.idea.module
+                // 如果某个子项目的 ideaModule 设置为 false，则不会在 idea 中生成 module
+                def modulesToInclude = subprojects.findAll {it.ideaModule.enabled == true}
+                modules = modulesToInclude.idea.module
+            }
+        }
+    }
+}
+
+idea {
+    module {
+        downloadSources = true
+    }
+    project {
+        jdkName = project_jdk
+        languageLevel = project_jdk
+        vcs = 'Git'
+    }
+}
+

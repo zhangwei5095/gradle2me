@@ -1,0 +1,37 @@
+apply plugin: 'maven'
+
+// 注意：不要定义这个，如果定义的不正确，否则依赖可能会出问题
+// group = 'cn.anytech.enterprise'
+
+// jar包的名字
+archivesBaseName = 'hibernate4'
+
+eclipse {
+	project {
+		name = 'hibernate4'
+	}
+}
+sourceCompatibility = 1.6  
+targetCompatibility = 1.6
+sourceSets{
+	description  = "设置源码。。。。"
+    main{
+        java{srcDir "src/main/java"}
+        resources{srcDir "src/main/resources"}
+    }
+    test{
+        java{srcDir "src/test/java"}
+        resources{srcDir "src/test/resources"}
+    }
+}
+
+
+dependencies {
+    compile (
+		libraries.'hibernate-core',
+        libraries.'hibernate-ehcache',
+        libraries.'hibernate-entitymanager',
+        libraries.'mysql',
+        libraries.'proxool'
+    )
+}

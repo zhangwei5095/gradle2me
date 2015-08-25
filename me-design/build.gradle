@@ -1,0 +1,26 @@
+apply plugin: 'maven'
+
+// jar包的名字
+archivesBaseName = 'me-design'
+
+eclipse {
+	project {
+		name = 'me-design'
+	}
+}
+
+
+dependencies {
+
+    compile (
+       
+    )
+    
+    testCompile(
+    	//libraries.junit
+    
+    )
+}
+
+
+

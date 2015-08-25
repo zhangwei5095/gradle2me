@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd" >
+        
+	<bean id="injectionServiec" class="star45.spring.ioc.injection.service.impl.InjectionServiecImpl">
+		<property name="injectionDao" ref="injectionDao"></property>
+	</bean>
+	<bean id="injectionDao" class="star45.spring.ioc.injection.dao.impl.InjectionDaoImpl">
+	</bean>
+	
+ </beans>

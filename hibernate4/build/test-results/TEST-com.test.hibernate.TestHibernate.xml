@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.test.hibernate.TestHibernate" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-08-05T06:44:24" hostname="xulikang" time="3.094">
+  <properties/>
+  <testcase name="tesLoad" classname="com.test.hibernate.TestHibernate" time="3.094"/>
+  <system-out><![CDATA[org.springframework.context.support.ClassPathXmlApplicationContext@1174c28a: startup date [Wed Aug 05 14:44:24 CST 2015]; root of context hierarchy
+]]></system-out>
+  <system-err><![CDATA[八月 05, 2015 2:44:24 下午 org.springframework.context.support.AbstractApplicationContext prepareRefresh
+信息: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@1174c28a: startup date [Wed Aug 05 14:44:24 CST 2015]; root of context hierarchy
+八月 05, 2015 2:44:24 下午 org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+信息: Loading XML bean definitions from class path resource [applicationContext-hibernate.xml]
+八月 05, 2015 2:44:24 下午 org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+信息: Loading XML bean definitions from class path resource [applicationContext-dao-demo.xml]
+八月 05, 2015 2:44:24 下午 org.springframework.core.io.support.PropertiesLoaderSupport loadProperties
+信息: Loading properties file from class path resource [hibernate.properties]
+log4j:WARN No appenders could be found for logger (org.jboss.logging).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+]]></system-err>
+</testsuite>
