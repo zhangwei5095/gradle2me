@@ -8,9 +8,6 @@
 
 package star45.web.util.spring;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -50,25 +47,17 @@ public class ExceptionAdvisorTest extends UnitTestBase{
 	}
 	@Test
 	public void test01(){
-		List<String> list = new ArrayList<String>();
+		String name = "我的-222222-33333-445454.txt";
 		
-		list.add("5");
-		list.add("1");
-		list.add("2");
-		list.add("3");
-		list.add("4");
+		int index = name.lastIndexOf("-");
 		
-		for (int i = 0; i < list.size(); i++) {
-			if(list.get(i).equals("5")){
-				String sour = list.get(0);
-				String dist = list.get(i);
-				list.set(i, sour);
-				list.set(0, dist);
-			}
-		}
-		for (String string : list) {
-			System.out.println(string);
-		}
+		int index1 = name.lastIndexOf(".");
+		
+		String lastname = name.substring(index1);
+		
+		String fristname = name.substring(0,index);
+		String newname = fristname+lastname;
+		System.out.println(newname);
 		
 		
 	}

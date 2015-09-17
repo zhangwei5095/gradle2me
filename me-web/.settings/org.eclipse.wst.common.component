@@ -152,11 +152,5 @@
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/D:/ProgramFiles/maven/Gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.2/83b5b8a7ba1c08f9e8c8ff2373724e33d3c1e22a/commons-io-2.2.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
-		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/F:/Pro/gradle2me/libs/Ice.jar">
-			<dependency-type>uses</dependency-type>
-		</dependent-module>
-		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/F:/Pro/gradle2me/libs/ojdbc14.jar">
-			<dependency-type>uses</dependency-type>
-		</dependent-module>
 	</wb-module>
 </project-modules>

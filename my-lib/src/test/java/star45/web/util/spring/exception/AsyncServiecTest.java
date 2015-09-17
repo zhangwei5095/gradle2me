@@ -15,7 +15,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.Assert;
 import org.springframework.util.concurrent.FailureCallback;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.SuccessCallback;
@@ -58,9 +57,11 @@ public class AsyncServiecTest {
 	@Test
     public void testAsyncGet2() throws Exception {
         ListenableFuture<String> listenableFuture = asyncService.asyncGet2();
+        
         SuccessCallback<String> successCallback = new SuccessCallback<String>() {
             @Override
             public void onSuccess(String str) {
+            	
                 System.out.println("异步回调成功了, return : " + str);
             }
         };

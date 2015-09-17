@@ -8,6 +8,7 @@
 
 package star45.web.util.spring.exception;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
@@ -22,6 +23,7 @@ import org.springframework.util.concurrent.ListenableFuture;
  * @ingroup g_scmcc_power_model
  */
 @Service
+@Async
 public class AsyncService {
 	public void throwException() {
         throw new RuntimeException("error");

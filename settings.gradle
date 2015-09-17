@@ -3,9 +3,9 @@ rootProject.name = 'gradle2me'
 
 include 'my-lib'
 
-include 'product'
-include 'me-web'
-include 'hibernate4'
+//include 'product'
+//include 'me-web'
+//include 'hibernate4'
 
 include 'me-test'
 include 'me-design'
